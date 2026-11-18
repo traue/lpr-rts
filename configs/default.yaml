@@ -1,0 +1,114 @@
+# Configuracao padrao do LPR-RTS.
+# Copie e ajuste: `lprts run --config configs/meu_setup.yaml`
+# Toda esta configuracao e gravada dentro do banco em cada sessao, o que torna
+# qualquer resultado reproduzivel meses depois. Chaves desconhecidas sao ERRO.
+
+source:
+  uri: "0"                 # arquivo .mp4, pasta de imagens, "0" (webcam) ou rtsp://
+  realtime: false          # true = descarta quadros atrasados (producao)
+                           # false = processa todos os quadros (avaliacao)
+  resize_width: 1280       # largura de PROCESSAMENTO; o banco grava coordenadas originais
+  target_fps: null
+  queue_size: 2
+  start_frame: 0
+  max_frames: 0            # 0 = sem limite
+  recording_start: null    # ISO-8601 com fuso do 1o quadro (video gravado), ex.:
+                           # "2026-03-14T08:00:00-03:00" -> eventos ganham media_time_utc
+  deadline_ms: null        # prazo de latencia; null = um periodo de quadro da fonte
+  backend: auto            # auto = AVFoundation (decodificacao em hardware) no macOS | ffmpeg
+
+detector:
+  vehicle_weights: data/models/yolo11n.pt
+  plate_weights: data/models/plate_yolo.pt
+  plate_detector: auto     # auto | yolo | classic
+  classes: trafego         # veiculos (so com placa) | trafego (+pessoas/bicicletas)
+                           # | completo (+ mobiliario urbano e animais)
+  detect_vehicles: true    # false = procura placas no quadro inteiro
+  conf: 0.30
+  plate_conf: 0.25
+  iou: 0.45
+  imgsz: 640
+  plate_imgsz: 320
+  device: auto             # auto | coreml | mps | cuda | cpu
+  runtime: auto            # auto (CoreML direto p/ .mlpackage) | ultralytics (referencia)
+  half: true
+  detect_every_n: 1        # >1: detecta a cada N quadros; nos demais o Kalman so preve
+  vehicle_pad: 0.02
+  max_rois_per_frame: 0    # teto de veiculos com busca de placa por quadro (0 = sem teto)
+  plate_width_ratio: 0.5   # so procura placa em veiculo com largura x 0.5 >= ocr.min_plate_width
+                           # (placa menor o OCR nao le); 0 = procura em todos
+  vehicle_merge_iou: 0.7   # mesmo veiculo como car e truck vira uma caixa so (0 = desligado)
+  auto_plate_fallback: true
+  fallback_after_frames: 60
+  workers: -1              # -1 = automatico: paralelo offline (mesmo resultado), serial em tempo real
+
+tracker:
+  # Limiares de associacao = IoU MINIMO. Os de veiculo reproduzem os valores
+  # efetivos do ByteTrack (match_thresh=0.8 la e custo, ou seja IoU >= 0.2).
+  high_thresh: 0.5
+  low_thresh: 0.1
+  match_iou: 0.2
+  second_match_iou: 0.5
+  max_age: 30              # em quadros da fonte
+  min_hits: 3
+  # Perfil para placas (caixas pequenas e tremidas; ver docs/ARQUITETURA.md)
+  plate_high_thresh: 0.30
+  plate_low_thresh: 0.08
+  plate_match_iou: 0.30
+  plate_second_match_iou: 0.15
+
+ocr:
+  engine: auto             # auto | fastplate | paddle | easyocr | tesseract | template
+  model_name: cct-s-v1-global-model
+  force_coreml: false
+  min_confidence: 0.35
+  min_plate_width: 45      # largura da placa na imagem PROCESSADA (a da deteccao)
+  full_resolution: true    # o recorte do OCR sai do quadro original (4K), nao do reduzido
+  ocr_every_n: 2           # roda OCR a cada N quadros por trilha
+  max_ocr_per_frame: 4     # teto de custo por quadro
+  max_reads_published: 12  # depois de publicada, para de ler ao atingir N leituras (0 = nunca)
+  max_grammar_corrections: 2
+  workers: 2
+  threads: 4               # threads do onnxruntime por sessao de OCR (0 = todos os nucleos)
+  pad: 0.06
+
+fusion:
+  mode: char               # char = votacao por caractere | string = placa inteira
+  min_reads: 3             # leituras minimas antes de publicar
+  min_agreement: 0.6       # concordancia minima entre as leituras
+  min_confidence: 0.45
+  require_valid_syntax: true   # so publica placa que fecha a gramatica brasileira
+  max_reads_per_track: 60  # 0 = todas
+  # Quando publicar: first_stable (1a fusao estavel, sem revisao) | revise
+  # (revisa se uma fusao estavel posterior mudar o texto) | on_exit (decide
+  # quando a trilha termina). Ver lprts.fusion.publication.
+  publish_policy: first_stable
+  exit_min_reads: 0        # >0: trilha sem decisao publica na saida com N leituras
+
+analytics:
+  db_path: runs/lprts.db
+  store_raw_reads: true    # leitura por quadro (permite refazer a fusao offline)
+  store_frame_telemetry: true
+  store_detections: true   # cada deteccao por quadro (reavaliacao sem reprocessar)
+  store_track_points: true # cada trilha em cada quadro (trajetorias, metricas de rastreio)
+  save_crops: true
+  crops_dir: runs/crops
+  clear_previous: true     # cada processamento comeca do zero: apaga o banco e os recortes
+                           # das execucoes anteriores (--keep-previous acumula)
+  async_writes: true
+  batch_size: 256
+  lines: []                # linhas virtuais; use `lprts calibrate` para desenhar
+  calibration: {}          # homografia; sem ela a velocidade fica indisponivel
+
+ui:
+  enabled: true
+  window_title: "LPR-RTS - Reconhecimento de Placas em Tempo Real"
+  max_width: 1280
+  show_vehicle_boxes: true
+  show_plate_boxes: true
+  show_tracks: true
+  show_trajectories: false
+  show_hud: true
+  theme: dark
+
+log_level: INFO

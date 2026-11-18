@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+.env
+
+# Ferramentas
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.DS_Store
+
+# Pesos de modelos (grandes; baixados por scripts/download_models.py)
+data/models/*
+!data/models/.gitkeep
+!data/models/README.md
+*.pt
+*.onnx
+*.mlpackage/
+*.engine
+
+# Videos e datasets
+data/videos/*
+!data/videos/.gitkeep
+!data/videos/README.md
+*.mp4
+*.mov
+*.avi
+*.mkv
+# ...exceto os videos sinteticos gerados pelo projeto (pequenos, deterministicos,
+# com ground truth e metadados da geracao). Videos reais continuam fora do git:
+# sao grandes e mostram placas de pessoas reais.
+!data/videos/sintetico*.mp4
+!data/videos/sintetico*_gt.csv
+!data/videos/sintetico*_meta.json
+
+# Saidas de execucao (banco de dados, crops, relatorios)
+runs/*
+!runs/.gitkeep
+
+# Treinamento ultralytics
+yolo*.pt
+
+# Figuras refeitas pelos scripts do artigo (scripts/artigo/)
+docs/artigo/figuras/

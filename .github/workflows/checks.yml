@@ -1,0 +1,53 @@
+name: Tests and distribution
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ['3.10', '3.11', '3.12']   # 3.11: o ambiente que gera os dados
+    runs-on: ${{ matrix.os }}
+    env:
+      QT_QPA_PLATFORM: offscreen
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - name: Qt runtime libraries
+        if: runner.os == 'Linux'
+        # PySide6 em modo offscreen ainda carrega EGL/GL, xkbcommon, fontconfig e D-Bus.
+        run: >-
+          sudo apt-get update && sudo apt-get install -y
+          libegl1 libgl1 libopengl0 libxkbcommon0 libfontconfig1 libdbus-1-3
+      - name: Install test dependencies
+        run: python -m pip install '.[ui,analysis,dev]' build
+      - name: Static checks
+        run: |
+          python -m ruff check src tests scripts
+          python -m mypy src/lprts
+          python -m pip check
+      - name: Source regression suite
+        env:
+          PYTHONPATH: src
+        run: python -m pytest tests
+      - name: Build distribution
+        run: python -m build
+      - name: Install and exercise wheel outside checkout
+        run: |
+          python -m pip install --force-reinstall --no-deps dist/*.whl
+          cd "$RUNNER_TEMP"
+          lprts --help
+          # 150 quadros e 2 veiculos: o menor video em que a demo avalia veiculos de
+          # fato (14 quadros nao tinham nenhum). A revocacao nao e fixada: o mp4
+          # regenerado muda com o codificador de cada plataforma.
+          lprts demo --frames 150 --vehicles 2
+          python -c "import json; r = json.load(open('runs/demo_report.json')); assert r['vehicle_level']['n_vehicles'] >= 1, r['vehicle_level']; assert r['frame_level']['n_attempts'] > 0, r['frame_level']"
+          lprts bench --source data/videos/sintetico.mp4 --frames 30 --no-vehicle-detector --plate-detector classic --ocr template

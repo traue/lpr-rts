@@ -1,0 +1,255 @@
+{
+ "tempo_nao_positivo": {
+  "V1": {
+   "na_metrica": 94,
+   "com_placa_correta": 46,
+   "minimo_do_ocr_px": 135.0,
+   "tempo_nao_positivo": {
+    "veiculos": 5,
+    "ja_acima_do_minimo_do_ocr_no_primeiro_quadro": 3,
+    "anotacao_comeca_no_quadro_zero": 0,
+    "dificil_no_primeiro_quadro": 0,
+    "largura_no_primeiro_quadro_mediana_px": 139.9,
+    "tempo_minimo_s": -5.166,
+    "tempo_mediano_s": -0.1
+   },
+   "tempo_positivo": {
+    "veiculos": 41,
+    "ja_acima_do_minimo_do_ocr_no_primeiro_quadro": 33,
+    "anotacao_comeca_no_quadro_zero": 0,
+    "dificil_no_primeiro_quadro": 0,
+    "largura_no_primeiro_quadro_mediana_px": 148.2,
+    "tempo_minimo_s": 0.001,
+    "tempo_mediano_s": 0.133
+   },
+   "veiculos_de_tempo_nao_positivo": [
+    {
+     "veiculo": "id:83",
+     "tempo_s": -5.166,
+     "primeiro_quadro": 6830,
+     "largura_no_primeiro_px": 231.8,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 231.8
+    },
+    {
+     "veiculo": "id:51",
+     "tempo_s": -0.1,
+     "primeiro_quadro": 3961,
+     "largura_no_primeiro_px": 128.3,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 142.4
+    },
+    {
+     "veiculo": "id:57",
+     "tempo_s": -0.1,
+     "primeiro_quadro": 4187,
+     "largura_no_primeiro_px": 148.6,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 148.6
+    },
+    {
+     "veiculo": "id:49",
+     "tempo_s": -0.034,
+     "primeiro_quadro": 3914,
+     "largura_no_primeiro_px": 128.7,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 128.7
+    },
+    {
+     "veiculo": "id:53",
+     "tempo_s": -0.0,
+     "primeiro_quadro": 4056,
+     "largura_no_primeiro_px": 139.9,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 139.9
+    }
+   ],
+   "tempo_real_por_repeticao": [
+    4,
+    4,
+    4,
+    4,
+    4
+   ]
+  },
+  "V2": {
+   "na_metrica": 9,
+   "com_placa_correta": 2,
+   "minimo_do_ocr_px": 135.0,
+   "tempo_nao_positivo": {
+    "veiculos": 0
+   },
+   "tempo_positivo": {
+    "veiculos": 2,
+    "ja_acima_do_minimo_do_ocr_no_primeiro_quadro": 2,
+    "anotacao_comeca_no_quadro_zero": 0,
+    "dificil_no_primeiro_quadro": 0,
+    "largura_no_primeiro_quadro_mediana_px": 192.5,
+    "tempo_minimo_s": 0.5,
+    "tempo_mediano_s": 0.7165
+   },
+   "veiculos_de_tempo_nao_positivo": [],
+   "tempo_real_por_repeticao": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "V3": {
+   "na_metrica": 56,
+   "com_placa_correta": 39,
+   "minimo_do_ocr_px": 135.0,
+   "tempo_nao_positivo": {
+    "veiculos": 4,
+    "ja_acima_do_minimo_do_ocr_no_primeiro_quadro": 4,
+    "anotacao_comeca_no_quadro_zero": 0,
+    "dificil_no_primeiro_quadro": 0,
+    "largura_no_primeiro_quadro_mediana_px": 207.6,
+    "tempo_minimo_s": -1.701,
+    "tempo_mediano_s": -1.15
+   },
+   "tempo_positivo": {
+    "veiculos": 35,
+    "ja_acima_do_minimo_do_ocr_no_primeiro_quadro": 35,
+    "anotacao_comeca_no_quadro_zero": 1,
+    "dificil_no_primeiro_quadro": 0,
+    "largura_no_primeiro_quadro_mediana_px": 199.5,
+    "tempo_minimo_s": 0.032,
+    "tempo_mediano_s": 0.1
+   },
+   "veiculos_de_tempo_nao_positivo": [
+    {
+     "veiculo": "id:61",
+     "tempo_s": -1.701,
+     "primeiro_quadro": 2432,
+     "largura_no_primeiro_px": 197.4,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 197.4
+    },
+    {
+     "veiculo": "id:23",
+     "tempo_s": -1.233,
+     "primeiro_quadro": 1152,
+     "largura_no_primeiro_px": 217.8,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 217.8
+    },
+    {
+     "veiculo": "id:37",
+     "tempo_s": -1.067,
+     "primeiro_quadro": 1590,
+     "largura_no_primeiro_px": 251.4,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 251.4
+    },
+    {
+     "veiculo": "id:44",
+     "tempo_s": -0.0,
+     "primeiro_quadro": 1755,
+     "largura_no_primeiro_px": 150.4,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 150.4
+    }
+   ],
+   "tempo_real_por_repeticao": [
+    3,
+    3,
+    3,
+    3,
+    3
+   ]
+  },
+  "V4": {
+   "na_metrica": 15,
+   "com_placa_correta": 12,
+   "minimo_do_ocr_px": 75.9375,
+   "tempo_nao_positivo": {
+    "veiculos": 4,
+    "ja_acima_do_minimo_do_ocr_no_primeiro_quadro": 4,
+    "anotacao_comeca_no_quadro_zero": 0,
+    "dificil_no_primeiro_quadro": 0,
+    "largura_no_primeiro_quadro_mediana_px": 202.8,
+    "tempo_minimo_s": -0.199,
+    "tempo_mediano_s": -0.0335
+   },
+   "tempo_positivo": {
+    "veiculos": 8,
+    "ja_acima_do_minimo_do_ocr_no_primeiro_quadro": 8,
+    "anotacao_comeca_no_quadro_zero": 2,
+    "dificil_no_primeiro_quadro": 0,
+    "largura_no_primeiro_quadro_mediana_px": 111.85,
+    "tempo_minimo_s": 0.001,
+    "tempo_mediano_s": 0.1505
+   },
+   "veiculos_de_tempo_nao_positivo": [
+    {
+     "veiculo": "id:11",
+     "tempo_s": -0.199,
+     "primeiro_quadro": 415,
+     "largura_no_primeiro_px": 110.5,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 110.5
+    },
+    {
+     "veiculo": "id:15",
+     "tempo_s": -0.067,
+     "primeiro_quadro": 720,
+     "largura_no_primeiro_px": 210.2,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 210.2
+    },
+    {
+     "veiculo": "id:14",
+     "tempo_s": -0.0,
+     "primeiro_quadro": 626,
+     "largura_no_primeiro_px": 195.4,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 195.4
+    },
+    {
+     "veiculo": "id:4",
+     "tempo_s": 0.0,
+     "primeiro_quadro": 66,
+     "largura_no_primeiro_px": 219.0,
+     "dificil_no_primeiro": false,
+     "largura_max_px": 219.0
+    }
+   ],
+   "tempo_real_por_repeticao": [
+    2,
+    2,
+    2,
+    2,
+    2
+   ]
+  }
+ },
+ "origem_da_anotacao": {
+  "V1": {
+   "anotados_a_mao": {
+    "na_metrica": 27,
+    "com_placa_correta": 13,
+    "revocacao": 0.481481,
+    "ic95_wilson": [
+     0.30743,
+     0.660147
+    ],
+    "nao_detectados_pelo_sistema": 1,
+    "tempo_nao_positivo": 0
+   },
+   "pre_anotados": {
+    "na_metrica": 67,
+    "com_placa_correta": 33,
+    "revocacao": 0.492537,
+    "ic95_wilson": [
+     0.37652,
+     0.609364
+    ],
+    "nao_detectados_pelo_sistema": 1,
+    "tempo_nao_positivo": 5
+   }
+  }
+ }
+}

@@ -1,0 +1,60 @@
+# Perfil de TEMPO REAL: camera ao vivo, latencia baixa, vazao estavel.
+# Aceita perder quadros para nunca acumular atraso. Descartes, latencia ponta a
+# ponta e prazos perdidos sao gravados por quadro (tabela `frames`).
+#
+#   lprts run --source rtsp://camera/stream --config configs/tempo_real.yaml
+#
+# Para veiculos rapidos (rodovia, via expressa), prefira
+# configs/tempo_real_rapido.yaml, que le todo quadro na resolucao original.
+#
+# Por que NAO ha deteccao alternada nem limiar alto de largura: na versao 0.2.0
+# este perfil usava detect_every_n: 2, ocr_every_n: 3 e min_plate_width: 70 numa
+# imagem reduzida a 960 px. Medido em video sintetico com veiculos 2x e 3x mais
+# rapidos, a revocacao por veiculo caia de 0,84 para 0,27 e 0,02 - sobrava menos
+# de uma leitura por veiculo -, enquanto a latencia usava 13 ms de um orcamento
+# de 33 ms. Economia que a maquina nao precisava, paga em acuracia.
+
+source:
+  uri: "0"
+  realtime: true           # descarte drop-oldest na captura
+  resize_width: 1280       # deteccao em 1280 px; o banco grava coordenadas originais
+  queue_size: 2
+  deadline_ms: null        # null = um periodo de quadro; defina o requisito do seu caso
+
+detector:
+  plate_detector: auto
+  detect_vehicles: true
+  classes: trafego         # pessoas, bicicletas e veiculos: a composicao da rua
+                           # (o mesmo YOLO; so o NMS e o rastreio de mais objetos)
+  imgsz: 640
+  plate_imgsz: 320
+  device: auto
+  detect_every_n: 1        # deteccao em todo quadro: veiculo rapido nao pode perder medida
+  max_rois_per_frame: 6    # teto de custo por quadro: os 6 maiores veiculos
+  workers: 0               # serial: a maquina acompanha a camera e a reordenacao so somaria latencia
+
+ocr:
+  engine: auto
+  ocr_every_n: 2           # le cada trilha em quadros alternados
+  max_ocr_per_frame: 3
+  max_reads_published: 12  # depois de publicada, para de ler ao atingir 12 leituras
+  workers: 2               # OCR assincrono, fora do caminho critico
+  min_plate_width: 45      # em pixels da imagem processada (1280 px); o recorte do OCR
+                           # sai do quadro original (ocr.full_resolution)
+
+fusion:
+  min_reads: 3
+  min_agreement: 0.6
+  require_valid_syntax: true
+
+analytics:
+  store_raw_reads: true    # necessario para avaliar e reotimizar a fusao
+  store_frame_telemetry: true
+  store_detections: true
+  store_track_points: true
+  save_crops: true
+  batch_size: 256
+
+ui:
+  show_trajectories: false
+log_level: WARNING

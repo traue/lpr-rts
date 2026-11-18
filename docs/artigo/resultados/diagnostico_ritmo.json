@@ -1,0 +1,53 @@
+{
+ "chip": "Apple M4 Pro",
+ "energia": "Now drawing from 'AC Power'",
+ "python": "3.11.16",
+ "rois_por_quadro": 5,
+ "ocupados_no_regime_c": 4,
+ "regimes": {
+  "A sem pausa": {
+   "veiculos_ms": 3.3603520731170042,
+   "placa_por_roi_ms": 1.0839693113521207,
+   "quadro_ms": 8.780198629877608,
+   "quadro_p50_ms": 8.73035399854416,
+   "quadro_p99_ms": 9.4653388345614,
+   "quadros": 300
+  },
+  "B 30 quadros/s": {
+   "veiculos_ms": 7.29047597652728,
+   "placa_por_roi_ms": 2.208344664715696,
+   "quadro_ms": 18.33219930010576,
+   "quadro_p50_ms": 18.493042000045534,
+   "quadro_p99_ms": 22.938062004977837,
+   "quadros": 300
+  },
+  "C 30 quadros/s, CPU ocupada": {
+   "veiculos_ms": 3.365839969871255,
+   "placa_por_roi_ms": 1.0851298387084778,
+   "quadro_ms": 8.791489163413644,
+   "quadro_p50_ms": 8.780187490629032,
+   "quadro_p99_ms": 9.240156680025393,
+   "quadros": 300
+  },
+  "A sem pausa, de novo": {
+   "veiculos_ms": 3.351916806277586,
+   "placa_por_roi_ms": 1.082310781397003,
+   "quadro_ms": 8.7634707132626,
+   "quadro_p50_ms": 8.742167003219947,
+   "quadro_p99_ms": 9.187924072321039,
+   "quadros": 300
+  },
+  "B 30 quadros/s, de novo": {
+   "veiculos_ms": 7.229078063246561,
+   "placa_por_roi_ms": 2.193133581914784,
+   "quadro_ms": 18.19474597282048,
+   "quadro_p50_ms": 18.52339649485657,
+   "quadro_p99_ms": 23.209476839547275,
+   "quadros": 300
+  }
+ },
+ "razoes": {
+  "B_sobre_A": 2.0820584655631764,
+  "C_sobre_A": 1.0022406363753344
+ }
+}

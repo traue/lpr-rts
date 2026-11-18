@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "Se usar este software, cite-o como abaixo."
+type: software
+title: "LPR-RTS: Sistema de Reconhecimento de Placas Veiculares em Tempo Real"
+version: 0.5.0
+license: AGPL-3.0-or-later
+authors:
+  - family-names: Traue
+    given-names: Thiago G.
+    affiliation: "Programa de Pós-Graduação em Engenharia Elétrica e Computação, Universidade Presbiteriana Mackenzie"
+abstract: >-
+  Sistema aberto de leitura de placas veiculares em tempo real brando, que roda num computador
+  de consumo, junto à câmera, e grava cada quadro, detecção, leitura e decisão para análise
+  científica. Prova de conceito para pesquisa de doutorado.
+keywords:
+  - reconhecimento de placas veiculares
+  - tempo real brando
+  - computação de borda
+  - análise de vídeo
+# Acrescente, depois de publicar: repository-code: "https://..."

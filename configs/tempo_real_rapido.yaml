@@ -1,0 +1,78 @@
+# Perfil de TEMPO REAL PARA VEICULOS RAPIDOS: rodovia, via expressa, carros que
+# atravessam a cena em poucos quadros.
+#
+#   lprts run --source rtsp://camera/stream --config configs/tempo_real_rapido.yaml
+#   lprts eval --source v.mp4 --gt gt.csv --config configs/tempo_real_rapido.yaml \
+#              --realtime --repeat 5
+#
+# Principio: com um veiculo rapido, cada quadro em que a placa e legivel e
+# insubstituivel. Entao: deteccao e OCR em TODO quadro, na resolucao original,
+# sem parar de ler depois de publicar. O OCR continua assincrono (fora do
+# caminho critico) e a captura continua descartando quadros se a maquina nao
+# acompanhar - o custo extra aparece como latencia/descarte medidos, nunca como
+# atraso acumulado.
+#
+# Medido (Apple M5 Pro, video sintetico, detector classico + fast-plate-ocr,
+# tempo real com descarte): revocacao por veiculo de 0,88 / 0,86 / 0,69 com
+# veiculos 1x / 2x / 3x mais rapidos (0,86 / 0,86 / 0,61 sem exit_min_reads),
+# latencia ponta a ponta p99 < 9 ms, nenhum quadro descartado. Com o YOLO11n de objetos no
+# caminho critico (30 fps, conteudo real): p99 de 11-12 ms em CoreML e de
+# 24-27 ms em PyTorch/MPS, sem prazo perdido - rode
+# `python scripts/download_models.py --coreml` no Mac. Outra maquina: MECA antes
+# de adotar (scripts/benchmark_componentes.py e lprts eval --realtime).
+#
+# O software nao compensa a camera: para veiculos acima de ~80 km/h use
+# obturador de 1/1000 a 1/2000 s (borrao de movimento), 60 fps se possivel e
+# iluminacao infravermelha a noite.
+
+source:
+  uri: "0"
+  realtime: true           # descarte drop-oldest na captura
+  resize_width: null       # resolucao original: placas distantes ainda sao legiveis
+  queue_size: 2
+  deadline_ms: null        # null = um periodo de quadro da fonte
+
+detector:
+  plate_detector: auto
+  detect_vehicles: true
+  classes: trafego         # pessoas, bicicletas e veiculos: a composicao da rua
+                           # (o mesmo YOLO; so o NMS e o rastreio de mais objetos)
+  imgsz: 640
+  plate_imgsz: 320
+  device: auto
+  detect_every_n: 1        # toda medida conta
+  max_rois_per_frame: 8    # teto de custo por quadro: os 8 maiores veiculos
+  workers: 0               # serial: menor latencia por quadro
+
+ocr:
+  engine: auto
+  ocr_every_n: 1           # le toda placa legivel em todo quadro
+  max_ocr_per_frame: 4
+  max_reads_published: 0   # nunca para de ler: a fusao final usa tudo
+  workers: 3               # OCR assincrono em paralelo
+  min_plate_width: 40      # em pixels da imagem original (resize_width: null)
+
+fusion:
+  min_reads: 3
+  min_agreement: 0.6
+  require_valid_syntax: true
+  # Veiculo rapido fica poucos quadros legivel: com 1-2 leituras nunca chegava a
+  # min_reads e saia de cena sem placa, mesmo com a leitura certa. Na saida, a
+  # trilha sem decisao publica com 1 leitura (sintaxe, concordancia e confianca
+  # continuam exigidas; marcado como exit_relaxed). Medido (sintetico pareado,
+  # 60 veiculos, este perfil, offline): revocacao 0,15 -> 0,37 a 4x e
+  # 0,47 -> 0,57 a 3x; 38 veiculos ganhos, 0 perdidos; precisao mantida.
+  exit_min_reads: 1
+  publish_policy: first_stable   # "revise" nao ajudou: segue erros sistematicos do OCR
+
+analytics:
+  store_raw_reads: true
+  store_frame_telemetry: true
+  store_detections: true
+  store_track_points: true
+  save_crops: true
+  batch_size: 256
+
+ui:
+  show_trajectories: false
+log_level: WARNING

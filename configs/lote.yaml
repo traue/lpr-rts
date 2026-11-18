@@ -1,0 +1,48 @@
+# Perfil de LOTE: processar um corpus de videos, offline, o mais rapido possivel.
+# Nao ha operador olhando nem prazo por quadro - o objetivo e vazao agregada.
+#
+#   lprts batch "corpus/*.mp4" --backend process --config configs/lote.yaml
+#   mpirun -n 64 python -m lprts.core.batch --videos "corpus/*.mp4" \
+#          --backend mpi --config configs/lote.yaml
+
+source:
+  realtime: false          # completude acima de latencia
+  resize_width: 1280       # coordenadas gravadas continuam na resolucao original
+  max_frames: 0
+
+detector:
+  plate_detector: auto
+  detect_vehicles: true
+  classes: trafego
+  imgsz: 640
+  detect_every_n: 1
+  device: auto
+  workers: 0               # o paralelismo vem do lote (um video por processo)
+
+ocr:
+  engine: auto
+  ocr_every_n: 2
+  max_ocr_per_frame: 6
+  max_reads_published: 0   # nao censura as leituras: o lote alimenta o `lprts tune`
+  workers: 1               # o paralelismo vem do lote, nao de dentro do video
+  min_plate_width: 55
+
+fusion:
+  mode: char
+  min_reads: 3
+  min_agreement: 0.6
+  require_valid_syntax: false   # registra tudo; filtre depois com `lprts tune`
+  max_reads_per_track: 0
+
+analytics:
+  db_path: runs/lote/lprts.db
+  store_raw_reads: true    # essencial: permite reotimizar a fusao sem reprocessar
+  store_frame_telemetry: true
+  store_detections: true
+  store_track_points: true
+  save_crops: false        # milhares de recortes enchem o disco num corpus grande
+  batch_size: 512
+
+ui:
+  enabled: false
+log_level: WARNING

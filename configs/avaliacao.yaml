@@ -1,0 +1,53 @@
+# Perfil de AVALIACAO CIENTIFICA: prioriza reprodutibilidade e completude.
+# Nenhum quadro descartado, OCR sincrono, tudo gravado - os numeros de acuracia
+# que vao para o artigo devem sair daqui.
+#
+#   lprts eval --source video.mp4 --gt anotacoes.csv --config configs/avaliacao.yaml
+#
+# Para medir o comportamento SOB RESTRICAO DE TEMPO REAL, use o mesmo perfil com
+# `lprts eval --realtime --repeat 5` (ver docs/AVALIACAO.md, secao 5).
+
+source:
+  realtime: false          # processa TODOS os quadros
+  resize_width: null       # resolucao original: nada de reamostragem
+  max_frames: 0
+
+detector:
+  plate_detector: auto
+  detect_vehicles: true
+  classes: trafego         # inclui pedestres e ciclistas na composicao medida
+  auto_plate_fallback: false   # comportamento fixo: nada muda no meio do experimento
+  conf: 0.25               # limiar mais baixo: melhor curva precisao-revocacao
+  plate_conf: 0.20
+  imgsz: 640
+  detect_every_n: 1        # deteccao em todo quadro
+  max_rois_per_frame: 0    # sem teto: offline nao tem prazo
+  plate_width_ratio: 0     # procura placa em todo veiculo: mede a deteccao de placas inteira
+  # Serial: a latencia por quadro "sem prazo" mede o custo de processar, sem fila.
+  # Para so a acuracia, `--parallel -1` da o MESMO resultado bit a bit ~3x mais
+  # rapido (le as placas nos workers), mas a latencia passa a incluir a fila.
+  workers: 0
+
+ocr:
+  engine: auto
+  ocr_every_n: 1           # le em todos os quadros: maximo de dados
+  max_ocr_per_frame: 16    # sem teto pratico (offline nao tem prazo)
+  max_reads_published: 0   # NUNCA para de ler: a amostra de leituras nao depende do acerto
+  workers: 1               # sincrono e deterministico
+  min_plate_width: 40      # inclui placas pequenas para medir a degradacao
+
+fusion:
+  mode: char
+  min_reads: 3
+  min_agreement: 0.6
+  require_valid_syntax: false   # registra tudo; filtre na analise
+  max_reads_per_track: 0   # todas as leituras votam: a refusao offline reproduz o online
+
+analytics:
+  db_path: runs/avaliacao.db
+  store_raw_reads: true    # essencial: permite refazer a fusao sem reprocessar
+  store_frame_telemetry: true
+  store_detections: true   # permite reavaliar a deteccao a partir do banco
+  store_track_points: true # base das metricas de rastreamento
+  save_crops: true
+log_level: INFO
