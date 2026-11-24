@@ -62,6 +62,10 @@ dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.4", "mypy>=1.10"]
 
 all = ["lprts[ui,dl,ocr,analysis,dev]"]
 
+[project.urls]
+Repository = "https://github.com/traue/lpr-rts"
+Issues = "https://github.com/traue/lpr-rts/issues"
+
 [project.scripts]
 lprts = "lprts.cli:main"
 

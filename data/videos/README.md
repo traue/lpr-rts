@@ -44,7 +44,7 @@ placas antes de compartilhar uma exportação (receita em `docs/DADOS.md`).
 ## Organização da pasta (vídeos reais do artigo)
 
 Nada daqui, além deste README e dos sintéticos, vai para o git: os vídeos, os gabaritos e as
-exportações do CVAT ficam no armazenamento descrito em [`DADOS_DO_ARTIGO.md`](../../DADOS_DO_ARTIGO.md).
+exportações do CVAT estão no Zenodo, em <https://doi.org/10.5281/zenodo.24351664>.
 Baixados, eles voltam para estas pastas.
 
 | Pasta | O que tem |
@@ -55,11 +55,9 @@ Baixados, eles voltam para estas pastas.
 | `cvat/revisado/` | a exportação do CVAT revisada pelo autor, de onde sai cada gabarito (`IMG_*_cvat_revisado.zip`) |
 | `cvat/preanotacao/` | a pré-anotação gerada a partir das detecções do sistema, como foi importada no CVAT antes da revisão |
 | `cvat/historico/` | a anotação à mão do autor e estados intermediários, para a proveniência |
-| `_preanotacao/` | scripts e arquivos de trabalho da pré-anotação |
 
 O passo a passo de cada vídeo (refinar, converter, conferir) está em
-[`docs/COLETA.md`](../../docs/COLETA.md); o que cada vídeo tem, em
-[`DADOS_DO_ARTIGO.md`](../../DADOS_DO_ARTIGO.md).
+[`docs/COLETA.md`](../../docs/COLETA.md).
 
 ## Fontes de vídeo aceitas
 

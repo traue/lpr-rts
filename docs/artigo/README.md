@@ -10,7 +10,11 @@ placas veiculares em tempo real brando em hardware de consumo". O texto do artig
 | `resultados/diagnostico_anotacao.json` | os tempos menores ou iguais a zero e a comparação entre os veículos anotados à mão e os pré-anotados (`scripts/artigo/diagnostico_anotacao.py`) |
 | `plano_analise_registrado.md` | o plano de análise como foi registrado em 15/11/2026, antes da bateria (commit `a523d3f` do repositório de desenvolvimento) |
 
-Os dados e os passos para refazer tudo estão em [`../../DADOS_DO_ARTIGO.md`](../../DADOS_DO_ARTIGO.md).
+Os dados estão no Zenodo, em <https://doi.org/10.5281/zenodo.24351664>, e os passos para refazer tudo, na seção "Reproduzir o
+artigo" do [README](../../README.md).
+Cada sessão grava o commit do código em que rodou (`sessions.code_version`). São commits do
+repositório de desenvolvimento, que não é público (`6669cbe` na bateria e `6399c13` nas rodadas
+refeitas); o código do sistema deste repositório é idêntico ao deles.
 As figuras que os scripts refazem vão para `figuras/`, nesta pasta, que fica fora do git.
 
 ## O que mudou em relação ao plano registrado

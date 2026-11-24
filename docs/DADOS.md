@@ -303,6 +303,6 @@ for placa, t, vel, classe in con.execute(
 
 ### Os dados do artigo
 
-Os dados do artigo, descritos em [DADOS_DO_ARTIGO.md](../DADOS_DO_ARTIGO.md), não são
-pseudonimizados: os vídeos, os gabaritos e os bancos das sessões trazem o texto das placas,
-porque a reprodução depende deles. As condições de uso estão naquele arquivo.
+Os dados do artigo, no Zenodo (<https://doi.org/10.5281/zenodo.24351664>), não são pseudonimizados: os vídeos, os
+gabaritos e os bancos das sessões trazem o texto das placas, porque a reprodução depende deles.
+As condições de uso estão no registro.

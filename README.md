@@ -8,8 +8,8 @@ leituras ao longo do tempo e grava dados estruturados para análise científica.
 nuvem, nenhuma API externa, nenhum container. Testado em macOS (Apple Silicon) e Linux.
 
 ```bash
-git clone <ENDEREÇO DO REPOSITÓRIO>
-cd <pasta do repositório>
+git clone https://github.com/traue/lpr-rts.git
+cd lpr-rts
 ./start.sh
 ```
 
@@ -49,8 +49,8 @@ execução.
 
 Este repositório traz o código, as configurações e os resultados do artigo "LPR-RTS: leitura de
 placas veiculares em tempo real brando em hardware de consumo". Os vídeos, os gabaritos e os
-bancos das sessões ficam fora do git, porque são grandes e contêm placas reais. Onde baixá-los e
-como montar as pastas está em [DADOS_DO_ARTIGO.md](DADOS_DO_ARTIGO.md).
+bancos das sessões ficam fora do git, porque são grandes e contêm placas reais. Eles estão no
+Zenodo, em <https://doi.org/10.5281/zenodo.24351664>, com as condições de uso.
 
 - Resultados: [`docs/artigo/resultados/`](docs/artigo/resultados/) tem o `analise.json`, com
   todos os números do artigo, e os dois diagnósticos.
@@ -943,7 +943,7 @@ tests/      ~670 testes, incluindo as regressões da auditoria de dados
 docs/       ARQUITETURA · DADOS · DICIONARIO_DE_DADOS · AVALIACAO · COLETA · PARALELISMO
             modelos/registro_de_campo.csv
             artigo/ (resultados e plano de análise registrado)
-CHANGELOG.md · DADOS_DO_ARTIGO.md · CITATION.cff
+CHANGELOG.md · CITATION.cff
 ```
 
 ---
@@ -1082,8 +1082,8 @@ oferecê-lo como serviço em rede, precisa publicar o código-fonte sob a mesma 
 
 Os modelos de terceiros não estão neste repositório: o `scripts/download_models.py` os baixa,
 cada um com a sua licença. O YOLO11 da Ultralytics e o detector de placas do morsetechlab estão
-sob AGPL-3.0; o `fast-plate-ocr`, sob MIT. Os dados do artigo têm licença própria, descrita em
-[DADOS_DO_ARTIGO.md](DADOS_DO_ARTIGO.md).
+sob AGPL-3.0; o `fast-plate-ocr`, sob MIT. Os dados do artigo têm licença própria, indicada no
+Zenodo.
 
 ## Como citar
 
@@ -1094,7 +1094,7 @@ sob AGPL-3.0; o `fast-plate-ocr`, sob MIT. Os dados do artigo têm licença pró
   year    = {2026},
   version = {0.5.0},
   note    = {Prova de conceito para pesquisa de doutorado},
-  url     = {<ENDEREÇO DO REPOSITÓRIO>}
+  url     = {https://github.com/traue/lpr-rts}
 }
 ```
 

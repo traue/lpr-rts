@@ -622,12 +622,12 @@ def figura_tempo(b1: dict, b2: dict, b3: dict, saida: Path) -> None:
         ax.errorbar(ns, [pn[k]["media"] for k in ns],
                     yerr=[[pn[k]["media"] - pn[k]["p10"] for k in ns], [pn[k]["p90"] - pn[k]["media"] for k in ns]],
                     fmt=marca, color=cor, ms=3.2, lw=0.6, capsize=0, mec="white", mew=0.4,
-                    label=f"{v}: {b2[v]['a_ms']:.1f} + {b2[v]['b_ms']:.2f}·n".replace(".", ","))
+                    label=f"{v} ({b2[v]['a_ms']:.1f} + {b2[v]['b_ms']:.2f}·n)".replace(".", ","))
         xx = np.array([0, max(ns)])
         ax.plot(xx, b2[v]["a_ms"] + b2[v]["b_ms"] * xx, color=cor, lw=0.8)
     ax.set_xlabel("veículos com busca de placa (n)")
     ax.set_ylabel("tempo de serviço (ms)")
-    ax.set_title("(b) custo por quadro: a + b·n", loc="left", fontsize=7)
+    ax.set_title("(b) custo por quadro, a + b·n", loc="left", fontsize=7)
     ax.legend(frameon=False, fontsize=5.4, loc="upper left", handletextpad=0.2, borderaxespad=0.1)
     _eixo(ax, "y")
     # (c) lei de Little: quadros no sistema (L) x utilização (ρ); acima da diagonal, espera
@@ -639,7 +639,7 @@ def figura_tempo(b1: dict, b2: dict, b3: dict, saida: Path) -> None:
     pior = max(b3.values(), key=lambda p: p["prazo_perdido"])
     if pior["prazo_perdido"] > 0.02:
         nome = {"o1_ultralytics_rt": "sem O1"}.get(pior["condicao"], pior["condicao"])
-        ax.annotate(f"{pior['video']} {nome}:\n{100 * pior['prazo_perdido']:.0f}% fora do prazo",
+        ax.annotate(f"{pior['video']} {nome},\n{100 * pior['prazo_perdido']:.0f}% fora do prazo",
                     (pior["rho_processamento"], pior["L_quadros"]), textcoords="offset points",
                     xytext=(-4, 6), ha="right", fontsize=5.2, color=fig_base.TINTA_2)
     ax.plot([0, 1], [0, 1], color=fig_base.TINTA_2, ls=":", lw=0.7)
@@ -648,7 +648,7 @@ def figura_tempo(b1: dict, b2: dict, b3: dict, saida: Path) -> None:
     ax.set_ylim(0, 1.05)
     ax.set_xlabel("utilização do processamento, ρ = λ·E[S]")
     ax.set_ylabel("quadros no sistema, L = λ·W")
-    ax.set_title("(c) fila: L × ρ, 28 condições", loc="left", fontsize=7)
+    ax.set_title("(c) fila, L × ρ em 28 condições", loc="left", fontsize=7)
     ax.legend(frameon=False, fontsize=5.6, loc="lower right", handletextpad=0.1)
     _eixo(ax, "y")
     _salvar(fig, plt, saida)
@@ -686,7 +686,7 @@ def figura_otimizacoes(c: dict, saida: Path) -> None:
     marcas_x = [m for m in (-50, -10, -5, 0, 5, 10) if ax2.get_xlim()[0] <= m <= ax2.get_xlim()[1]]
     ax2.set_xticks(marcas_x, [_virgula(m) for m in marcas_x])
     ax1.set_xlabel("Δ revocação (p.p.)\ncom − sem, IC 95%")
-    ax2.set_xlabel("Δ latência p99 (ms), com − sem;\ntraço: faixa entre repetições")
+    ax2.set_xlabel("Δ latência p99 (ms)\ncom − sem, por vídeo")
     ax2.legend(frameon=False, fontsize=5.5, loc="lower center", bbox_to_anchor=(0.45, 1.0), ncol=4,
                handletextpad=0.05, columnspacing=0.5, borderaxespad=0.1)
     _eixo(ax1, formatar="x")
@@ -719,7 +719,7 @@ def figura_acuracia(d: dict, e: dict, saida: Path) -> None:
         km = d["km"][modo]
         t = np.concatenate([[0.0], np.repeat(km["t"], 2), [tau]])
         s = np.concatenate([[1.0, 1.0], np.repeat(km["S"], 2)[:-1], [km["S"][-1], km["S"][-1]]])[: len(t)]
-        ax.plot(t, s, color=cor, lw=1.0, ls=ls, label=f"{rot}: {km['rmst']:.2f} s".replace(".", ","))
+        ax.plot(t, s, color=cor, lw=1.0, ls=ls, label=f"{rot} ({km['rmst']:.2f} s)".replace(".", ","))
         if modo == "off":
             ax.fill_between(t, s, color=cor, alpha=0.12, lw=0)
     ax.text(tau * 0.5, 0.16, r"$\mathrm{RMST}=\int_0^{\tau} S(t)\,dt$", fontsize=5.6, color=fig_base.TINTA_2,
@@ -744,7 +744,7 @@ def figura_acuracia(d: dict, e: dict, saida: Path) -> None:
                           [max(0.0, f["ic"][1] - f["p"]) for f in dg["faixas"]]],
                     fmt=marca, color=cor, ms=2.6, lw=0.45, alpha=0.75, capsize=0, mec="white", mew=0.3)
         ax.plot([40, dg["trava_px"], dg["trava_px"], 420], [0, 0, dg["patamar"], dg["patamar"]],
-                color=cor, lw=0.9, ls=ls, label=f"{res}: {100 * dg['patamar']:.0f}%")
+                color=cor, lw=0.9, ls=ls, label=f"{res} px, {100 * dg['patamar']:.0f}%")
     ax.set_xscale("log", base=2)
     ax.set_xticks([50, 100, 200, 400], ["50", "100", "200", "400"])
     ax.set_xlim(45, 420)
@@ -781,7 +781,7 @@ def figura_acuracia(d: dict, e: dict, saida: Path) -> None:
     nomes += ["teto registrado", "teto corrigido"]
     for (res, cv), cor, ls in zip(e["curvas"].items(), CORES[:3], ("-", "--", "-."), strict=True):
         alcas.append(Line2D([], [], color=cor, lw=0.9, ls=ls))
-        nomes.append(f"degrau a {res} px: patamar de {100 * cv['degrau']['patamar']:.0f}%")
+        nomes.append(f"degrau a {res} px, patamar de {100 * cv['degrau']['patamar']:.0f}%")
     fig.legend(alcas, nomes, loc="upper center", ncol=5, frameon=False, fontsize=5.6, bbox_to_anchor=(0.5, -0.05),
                handletextpad=0.2, columnspacing=1.0)
     _salvar(fig, plt, saida)

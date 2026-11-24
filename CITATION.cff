@@ -17,4 +17,5 @@ keywords:
   - tempo real brando
   - computação de borda
   - análise de vídeo
-# Acrescente, depois de publicar: repository-code: "https://..."
+repository-code: "https://github.com/traue/lpr-rts"
+url: "https://github.com/traue/lpr-rts"
